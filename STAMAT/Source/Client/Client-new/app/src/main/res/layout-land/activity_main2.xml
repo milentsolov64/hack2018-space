@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00dafc"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -10,94 +11,121 @@
     tools:context="tsventine.stamat.Main2Activity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
         android:id="@+id/back"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentStart="false"
-        android:layout_marginTop="190dp" />
+        android:layout_width="121dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="24dp"
+        android:text="Back" />
 
     <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/servo4"
-        android:secondaryProgressTint="@color/accent_material_light"
-        android:progressTint="#b4252629"
-        android:progressDrawable="@color/accent_material_dark"
-        android:layout_marginLeft="400dp"
-        android:layout_marginTop="80dp"
+        android:id="@+id/servo2"
+        android:layout_width="147dp"
+        android:layout_height="63dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/back"
+        android:layout_marginBottom="32dp"
+        android:max="110"
         android:maxHeight="20dp"
         android:maxWidth="100dp"
         android:minHeight="20dp"
         android:minWidth="200dp"
-        android:max="100"
+        android:progress="55"
+        android:progressDrawable="@color/accent_material_dark"
+        android:progressTint="#b4252629"
+        android:secondaryProgressTint="@color/accent_material_light"
         android:splitTrack="false"
-        android:thumb="@android:drawable/btn_star_big_on"
-        android:progress="20" />
+        android:thumb="@android:drawable/btn_star_big_on" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/back"
-        android:layout_marginEnd="13dp"
-        android:id="@+id/output2" />
+        android:id="@+id/output2"
+        android:layout_width="72dp"
+        android:layout_height="43dp"
+        android:layout_alignStart="@+id/servo3"
+        android:layout_alignTop="@+id/servo2"
+        android:text="Command" />
 
     <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/servo3"
-        android:secondaryProgressTint="@color/accent_material_light"
-        android:progressTint="#b4252629"
-        android:progressDrawable="@color/accent_material_dark"
+        android:layout_width="274dp"
+        android:layout_height="62dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/servo6"
+        android:layout_marginEnd="64dp"
+        android:max="110"
         android:maxHeight="20dp"
         android:maxWidth="100dp"
         android:minHeight="20dp"
         android:minWidth="200dp"
-        android:max="110"
+        android:progress="55"
+        android:progressDrawable="@color/accent_material_dark"
+        android:progressTint="#b4252629"
+        android:secondaryProgressTint="@color/accent_material_light"
         android:splitTrack="false"
-        android:progress="40"
-        android:thumb="@android:drawable/btn_star_big_on"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="240dp" />
+        android:thumb="@android:drawable/btn_star_big_on" />
 
     <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/servo6"
-        android:secondaryProgressTint="@color/accent_material_light"
-        android:progressTint="#b4252629"
-        android:progressDrawable="@color/accent_material_dark"
+        android:layout_width="146dp"
+        android:layout_height="62dp"
+        android:layout_alignStart="@+id/back"
+        android:layout_below="@+id/textView4"
+        android:max="195"
         android:maxHeight="20dp"
         android:maxWidth="100dp"
         android:minHeight="20dp"
         android:minWidth="200dp"
-        android:max="199"
+        android:progress="97"
+        android:progressDrawable="@color/accent_material_dark"
+        android:progressTint="#b4252629"
+        android:secondaryProgressTint="@color/accent_material_light"
         android:splitTrack="false"
-        android:thumb="@android:drawable/btn_star_big_on"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp"
-        android:progress="174" />
+        android:thumb="@android:drawable/btn_star_big_on" />
 
     <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/servo2"
-        android:secondaryProgressTint="@color/accent_material_light"
-        android:progressTint="#b4252629"
-        android:progressDrawable="@color/accent_material_dark"
+        android:layout_width="352dp"
+        android:layout_height="0dp"
+        android:layout_above="@+id/back"
+        android:layout_alignStart="@+id/back"
+        android:layout_marginBottom="0dp"
+        android:layout_marginStart="208dp"
+        android:max="110"
         android:maxHeight="20dp"
         android:maxWidth="100dp"
         android:minHeight="20dp"
         android:minWidth="200dp"
-        android:max="110"
-        android:splitTrack="false"
-        android:thumb="@android:drawable/btn_star_big_on"
-        android:layout_marginTop="18dp"
         android:progress="10"
-        android:layout_alignTop="@+id/servo3"
-        android:layout_alignParentStart="true" />
+        android:progressDrawable="@color/accent_material_dark"
+        android:progressTint="#b4252629"
+        android:secondaryProgressTint="@color/accent_material_light"
+        android:splitTrack="false"
+        android:thumb="@android:drawable/btn_star_big_on" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="101dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/servo2"
+        android:layout_alignStart="@+id/back"
+        android:text="Lower Hand" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/servo6"
+        android:layout_alignStart="@+id/back"
+        android:text="Upper Hand" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="71dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/servo3"
+        android:layout_below="@+id/back"
+        android:text="Camera" />
 
 </RelativeLayout>

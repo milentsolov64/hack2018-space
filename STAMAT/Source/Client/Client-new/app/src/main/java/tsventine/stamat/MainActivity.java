@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
     public static PrintWriter out = null;
     public static Socket socket = null;
     String serverAddress = "192.168.4.1"/*"192.168.1.112"*/;
-    int port=2121;
+    int port= 2121;
+    int progressFB = 80;
+    int progressLR = 80;
 
 
     private class socketConnection extends AsyncTask<String, Void,Integer > {
@@ -59,9 +61,12 @@ public class MainActivity extends AppCompatActivity {
         protected Integer doInBackground(String... strings) {
             try {
                 socket = new Socket(serverAddress, port);
+
             } catch (IOException e) {
                 return 1;
             }
+
+
 
             try {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected String doInBackground(String... strings) {
             out.println(strings[0]);
-            String response;
+            String response = "";
             try
             {
                 response = in.readLine();
@@ -199,7 +204,10 @@ public class MainActivity extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+
+                //int value = getIntent().getIntExtra("S2");
                 new sendMessage().execute("RESET");
+                //TO DO!!!!!!!!!!!!!!
             }
         });
 
@@ -207,17 +215,16 @@ public class MainActivity extends AppCompatActivity {
         final SeekBar sliderFB=(SeekBar) findViewById((R.id.forwardBackward));
         sliderFB.setRotation(-90);
          sliderLR.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
-                sliderLR.setProgress(progress);
-                if(progress>100) {
-                    new sendMessage().execute(String.valueOf("LR"+(progress-(progress*2)+100)));
-                }
-                else if(progress<100) {
-                    new sendMessage().execute(String.valueOf("LR"+(progress+(progress*2)-100)));
+                progressLR = progresValue;
+                sliderLR.setProgress(progressLR);
+                new sendMessage().execute(String.valueOf("LR"+(progressLR-80)));
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -227,21 +234,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                progress=100;
-                sliderLR.setProgress(progress);
+                progressLR=80;
+                sliderLR.setProgress(progressLR);
                 new sendMessage().execute(String.valueOf("LR0"));
             }
 
         });
 
         sliderFB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
-                sliderFB.setProgress(progress);
-                    new sendMessage().execute(String.valueOf("FB"+(progress-80)));
+                progressFB = progresValue;
+                sliderFB.setProgress(progressFB);
+                    new sendMessage().execute(String.valueOf("FB"+(progressFB-80)));
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -250,9 +261,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                progress=80;
-                sliderFB.setProgress(progress);
+                progressFB=80;
+                sliderFB.setProgress(progressFB);
                 new sendMessage().execute(String.valueOf("FB0"));
+
             }
 
         });
