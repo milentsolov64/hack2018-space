@@ -4,12 +4,15 @@
 <ol>
   <li>Server Side - Raspberry Pi 3</li>
    <ul>
-     <li>Server.jar</li>
-     <li>motion</li>
+     <li>Server.jar (almost done)</li>
+     <li>motion (done)</li>
      <li>sensors</li>
-     <li>hostapd (wifi AP)</li>
+     <li>hostapd [wifi AP] (done) </li>
    </ul>
   <li>Client Side - Android Phone</li>
+  <ul>
+     <li>android app (almost done)</li>
+   </ul>
 </ol>
 
 
