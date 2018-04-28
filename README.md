@@ -11,7 +11,7 @@
    </ul>
   <li>Client Side - Android Phone</li>
   <ul>
-     <li>android app (almost done)</li>
+     <li>android app - Stamat.apk (almost done)</li>
    </ul>
 </ol>
 
