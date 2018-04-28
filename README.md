@@ -7,7 +7,7 @@
      <li>Server.jar (almost done)</li>
      <li>motion (done)</li>
      <li>sensors (ЙОК)</li>
-     <li>hostapd [wifi AP] (done) </li>
+     <li>hostapd & dnsmasq [wifi AP] (done) </li>
    </ul>
   <li>Client Side - Android Phone</li>
   <ul>
