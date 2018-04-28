@@ -1,3 +1,3 @@
-<b>Hack Vratsa 2017</b>
+<b>Hack Vratsa 2018</b>
 </br>
 <b>#кодаправиш</b>
