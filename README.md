@@ -8,7 +8,7 @@
      <li>motion</li>
      <li>sensors</li>
      <li>hostapd (wifi AP)</li>
-   <ul>
+   </ul>
   <li>Client Side - Android Phone</li>
 </ol>
 
