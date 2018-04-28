@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /home/pi/Desktop/test
+sudo java -classpath .:classes:/opt/pi4j/lib/'*' stamat
+read -p "RIP"

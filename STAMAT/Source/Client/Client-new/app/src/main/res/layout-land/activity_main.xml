@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="tsventine.stamat.MainActivity">
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/leftRight"
+        android:secondaryProgressTint="@color/accent_material_light"
+        android:progressTint="#b4252629"
+        android:progressDrawable="@color/accent_material_dark"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="120dp"
+        android:maxHeight="20dp"
+        android:maxWidth="90dp"
+        android:minHeight="20dp"
+        android:minWidth="200dp"
+        android:max="199"
+        android:splitTrack="false"
+        android:progress="100"
+        android:thumb="@android:drawable/btn_star_big_on" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:text="anithing"
+        android:layout_gravity="right"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="430dp"
+        android:visibility="invisible" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Robot Control"
+        android:id="@+id/button"
+        android:layout_marginTop="190dp" />
+
+    <ToggleButton
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:text="New ToggleButton"
+        android:id="@+id/ledButton"
+        android:textOn="Led"
+        android:textOff="Led"
+        android:textSize="16dp"
+        android:layout_column="17"
+        android:layout_alignParentStart="true"
+        android:textColor="#000000" />
+
+    <ToggleButton
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:text="New ToggleButton"
+        android:id="@+id/glowButton"
+        android:textOn="glow"
+        android:textOff="glow"
+        android:checked="false"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        android:layout_column="21"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="false"
+        android:layout_marginLeft="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_marginLeft="300dp" />
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webView"
+        android:layout_marginLeft="260dp"
+        android:layout_alignBottom="@+id/button"
+        android:layout_below="@+id/editText"
+        android:layout_alignEnd="@+id/editText" />
+
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:id="@+id/resetButton"
+        android:textOn="Reset"
+        android:textOff="reset"
+        android:checked="false"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:layout_column="21"
+        android:layout_marginLeft="130dp"
+        android:text="Reset" />
+
+    <SeekBar
+        android:id="@+id/forwardBackward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/leftRight"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="450dp"
+        android:layout_marginTop="10dp"
+        android:max="160"
+        android:maxHeight="20dp"
+        android:maxWidth="100dp"
+        android:minHeight="20dp"
+        android:minWidth="200dp"
+        android:progress="80"
+        android:progressDrawable="@color/accent_material_dark"
+        android:progressTint="#b4252629"
+        android:secondaryProgressTint="@color/accent_material_light"
+        android:splitTrack="false"
+        android:thumb="@android:drawable/btn_star_big_on" />
+
+
+</RelativeLayout>
