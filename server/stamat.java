@@ -45,46 +45,39 @@ public class stamat
 	}
 
 
-	private static boolean executeArduino(String s,PrintWriter out) {
-
-		boolean flag = true;
-		try {
-			if(s.contains("AR")) {
-				out.write(s);
-				console.println(s);
-			}
-			else {
-				flag = false;
-			}
-		}
-		catch(Exception e){
-		}
-
-		return flag;
-	}
-
-	private static boolean executeCommand(String s, Serial serial)
+	private static boolean executeCommand(String s, Serial serial,PrintWriter out)
 	{
 		synchronized(console){
 			try {
+				if(s.contains("AR")) {
+					out.println(s);
+					console.println(s);
+				}
+				
 				if (s.contains("RESET")) {
 					serial.write("reset\r");
 				}
 
-				if (s == "LEDON") {
+				if (s.contains("LEDON")) {
 					pin.high();
-				}else if(s=="LEDOFF") {
+				}else if(s.contains("LEDOFF")) {
 					pin.low();
 				}
 					
-				if(s != "SENSORUP"){
+				if(s.contains("SENSORUP")){
 					serial.write("servo 5:" + servo5Up + "\r");
 					console.println(s);
-				}else if(s != "SENSORDOWN"){
+				}else if(s.contains("SENSORDOWN")){
 					serial.write("servo 5:" + servo5Down + "\r");
 					console.println(s);
 				}
-
+				
+				if(s.contains("S1")) {
+					s = s.replace("S1", "");
+					serial.write("servo 1:" + s + "\r");
+					console.println(s);
+				}
+				
 				if(s.contains("S2")) {
 					s = s.replace("S2", "");
 					serial.write("servo 2:" + s + "\r");
@@ -159,6 +152,7 @@ public class stamat
 
 		public void run()
 		{
+			final Serial serial = SerialFactory.createInstance();
 			try {
 
 				// print program title/header
@@ -166,7 +160,7 @@ public class stamat
 				// allow for user to exit program using CTRL-C
 				console.promptForExit();
 				// create an instance of the serial communications class
-				final Serial serial = SerialFactory.createInstance();
+				
 				// create and register the serial data listener
 				serial.addListener(new SerialDataEventListener() {
 					@Override
@@ -175,20 +169,6 @@ public class stamat
 						// NOTE! - It is extremely important to read the data received from the
 						// serial port.  If it does not get read from the receive buffer, the
 						// buffer will continue to grow and consume memory.
-
-						// print out the data received to the console
-						try {
-							console.println(event.getAsciiString());
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				});
-
-				final Serial arduino = SerialFactory.createInstance();
-				arduino.addListener(new SerialDataEventListener() {
-					@Override
-					public void dataReceived(SerialDataEvent event) {
 
 						// print out the data received to the console
 						try {
@@ -215,8 +195,24 @@ public class stamat
 				console.println("New connection with client# " + clientNumber + " at " + socket);
 				// open the default serial device/port with the configuration settings
 				serial.open(config);
+				
+				
+				final Serial arduino = SerialFactory.createInstance();
+				arduino.addListener(new SerialDataEventListener() {
+					@Override
+					public void dataReceived(SerialDataEvent event) {
 
-				config.device("dev/ttyACM0")
+						// print out the data received to the console
+						try {
+							console.println(event.getAsciiString());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+				try {
+				config.device("/dev/ttyACM0")
 				.baud(Baud._9600)
 				.flowControl(FlowControl.NONE);
 
@@ -224,7 +220,12 @@ public class stamat
 						" Data from Arduino will be displayed below.");
 
 				arduino.open(config);
-
+				}
+				catch(Exception e) {
+					console.println("nema arduino bachi na");
+				}
+				
+				
 				int flag=0;
 				BufferedReader in = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -238,13 +239,12 @@ public class stamat
 					if ((input == null) || (input.equals("."))) {
 						break;
 					}
-					if(!executeArduino(input,out)) {
-						if (executeCommand(input, serial)) {
+
+						if (executeCommand(input, serial,out)) {
 							out.println("OK" + input);
 						} else {
 							out.println("FAK");
 						}
-					}
 				}
 			} catch (IOException e) {
 				console.println("Error handling client# " + clientNumber + ": " + e);
@@ -255,6 +255,11 @@ public class stamat
 					console.println("Couldn't close a socket, what's going on?");
 				}
 				console.println("Connection with client# " + clientNumber + " closed"+"  "+Thread.activeCount());
+				try{
+				serial.close();
+				}catch(Exception e) {
+					
+				}
 				this.interrupt();
 			}
 		}
