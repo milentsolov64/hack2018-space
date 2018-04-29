@@ -188,28 +188,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        ToggleButton glow = (ToggleButton) findViewById(R.id.glowButton);
-        glow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                    new sendMessage().execute("GLOWON");
-                } else {
-                    // The toggle is disabled
-                    new sendMessage().execute("GLOWOFF");
-                }
-            }
-        });
-
         Button reset = (Button) findViewById(R.id.resetButton);
         reset.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
                 //int value = getIntent().getIntExtra("S2");
                 new sendMessage().execute("RESET");
-                //TO DO!!!!!!!!!!!!!!
+                new MainActivity.sendMessage().execute(String.valueOf("S2"+(5)));
+                new MainActivity.sendMessage().execute(String.valueOf("S1"+(-25)));
+                new MainActivity.sendMessage().execute(String.valueOf("S6"+(10)));
             }
         });
 

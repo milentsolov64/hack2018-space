@@ -8,8 +8,10 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +29,8 @@ public class Main2Activity extends AppCompatActivity {
     int progressServo3 = 55;
     int time = 50;
     String camAddress = "http://192.168.4.1:25566";
+
+
 
     public class sendMessage extends AsyncTask<String, Void,String > {
 
@@ -53,12 +57,19 @@ public class Main2Activity extends AppCompatActivity {
             }
             return response;
         }
-
         protected void onPostExecute(String r) {
             // This method is executed in the UIThread
             // with access to the result of the long running task
-            TextView text=(TextView)findViewById(R.id.output2);
-            text.setText(r);
+            if(r.contains("AR"))
+            {
+                TextView text=(TextView)findViewById(R.id.textView);
+                text.setText(r);
+            }
+            else
+            {
+                TextView text=(TextView)findViewById(R.id.textView);
+                text.setText("nema");
+            }
 
         }
     }
@@ -81,10 +92,11 @@ public class Main2Activity extends AppCompatActivity {
         
         final SeekBar servo1=(SeekBar) findViewById((R.id.servo1));
         final SeekBar servo3=(SeekBar) findViewById((R.id.servo3));
-        final SeekBar servo4=(SeekBar) findViewById((R.id.servo2));
+        final SeekBar servo4=(SeekBar) findViewById((R.id.servo4));
         servo4.setRotation(-90);
-        final SeekBar servo2=(SeekBar) findViewById((R.id.servo2));
+        final SeekBar servo2=(SeekBar) findViewById((R.id.servo4));
         final SeekBar servo6=(SeekBar) findViewById((R.id.servo6));
+        servo6.setRotation(-90);
 
         servo3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -203,6 +215,20 @@ public class Main2Activity extends AppCompatActivity {
 
         });
 
+
+
+        ToggleButton glow = (ToggleButton) findViewById(R.id.glowButton);
+        glow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    new Main2Activity.sendMessage().execute("SENSORUP");
+                } else {
+                    // The toggle is disabled
+                    new Main2Activity.sendMessage().execute("SENSORDOWN");
+                }
+            }
+        });
         WebView web=(WebView)findViewById(R.id.webView);
         web.getSettings().setJavaScriptEnabled(true);
 
@@ -224,5 +250,8 @@ public class Main2Activity extends AppCompatActivity {
         web.loadUrl(camAddress);
         web.getSettings().setLoadWithOverviewMode(true);
         web.getSettings().setUseWideViewPort(true);
+
+
     }
+
 }
