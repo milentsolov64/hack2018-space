@@ -10,6 +10,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="tsventine.stamat.Main2Activity">
 
+    <SeekBar
+        android:id="@+id/servo1"
+        android:layout_width="274dp"
+        android:layout_height="62dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/output2"
+        android:layout_marginBottom="24dp"
+        android:max="75"
+        android:maxHeight="20dp"
+        android:maxWidth="100dp"
+        android:minHeight="20dp"
+        android:minWidth="200dp"
+        android:progress="25"
+        android:progressDrawable="@color/accent_material_dark"
+        android:progressTint="#b4252629"
+        android:secondaryProgressTint="@color/accent_material_light"
+        android:splitTrack="false"
+        android:thumb="@android:drawable/btn_star_big_on" />
+
     <Button
         android:id="@+id/back"
         android:layout_width="121dp"
@@ -24,9 +43,9 @@
         android:id="@+id/servo2"
         android:layout_width="147dp"
         android:layout_height="63dp"
+        android:layout_alignEnd="@+id/back"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/back"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="26dp"
         android:max="110"
         android:maxHeight="20dp"
         android:maxWidth="100dp"
@@ -51,9 +70,8 @@
         android:id="@+id/servo3"
         android:layout_width="274dp"
         android:layout_height="62dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/servo6"
-        android:layout_marginEnd="64dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/back"
         android:max="110"
         android:maxHeight="20dp"
         android:maxWidth="100dp"
@@ -66,12 +84,20 @@
         android:splitTrack="false"
         android:thumb="@android:drawable/btn_star_big_on" />
 
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="177dp"
+        android:layout_height="119dp"
+        android:layout_alignEnd="@+id/servo2"
+        android:layout_alignParentTop="true"
+        android:visibility="visible" />
+
     <SeekBar
         android:id="@+id/servo6"
         android:layout_width="146dp"
         android:layout_height="62dp"
-        android:layout_alignStart="@+id/back"
-        android:layout_below="@+id/textView4"
+        android:layout_alignEnd="@+id/back"
+        android:layout_centerVertical="true"
         android:max="195"
         android:maxHeight="20dp"
         android:maxWidth="100dp"
@@ -124,8 +150,16 @@
         android:id="@+id/textView4"
         android:layout_width="71dp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/servo3"
         android:layout_below="@+id/back"
+        android:layout_toEndOf="@+id/back"
         android:text="Camera" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/servo3"
+        android:layout_centerHorizontal="true"
+        android:text="Hand" />
 
 </RelativeLayout>

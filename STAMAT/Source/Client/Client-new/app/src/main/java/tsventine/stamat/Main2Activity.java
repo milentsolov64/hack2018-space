@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,9 +21,12 @@ public class Main2Activity extends AppCompatActivity {
     Socket socket=MainActivity.socket;
     PrintWriter out = MainActivity.out;
     BufferedReader in = MainActivity.in;
+    int getProgressServo1 = 25;
     int progressServo2 = 55;
     int progressServo6 = 97;
     int progressServo3 = 55;
+    int time = 50;
+    String camAddress = "http://192.168.4.1:25566";
 
     public class sendMessage extends AsyncTask<String, Void,String > {
 
@@ -73,7 +78,8 @@ public class Main2Activity extends AppCompatActivity {
                 finish();
             }
         });
-
+        
+        final SeekBar servo1=(SeekBar) findViewById((R.id.servo1));
         final SeekBar servo3=(SeekBar) findViewById((R.id.servo3));
         final SeekBar servo4=(SeekBar) findViewById((R.id.servo2));
         servo4.setRotation(-90);
@@ -108,6 +114,11 @@ public class Main2Activity extends AppCompatActivity {
                 progress = progresValue;
                 servo4.setProgress(progress);
                 new sendMessage().execute(String.valueOf("S4"+(70-progress)));
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -120,6 +131,30 @@ public class Main2Activity extends AppCompatActivity {
 
         });
 
+        servo1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                getProgressServo1 = progresValue;
+                servo1.setProgress(getProgressServo1);
+                new sendMessage().execute(String.valueOf("S1"+(getProgressServo1-25)));
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
+        });
+        
         servo2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -127,6 +162,11 @@ public class Main2Activity extends AppCompatActivity {
                 progressServo2 = progresValue;
                 servo2.setProgress(progressServo2);
                 new sendMessage().execute(String.valueOf("S2"+(progressServo2-55)));
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -146,6 +186,11 @@ public class Main2Activity extends AppCompatActivity {
                 progressServo6 = progresValue;
                 servo6.setProgress(progressServo6);
                 new sendMessage().execute(String.valueOf("S6"+(progressServo6-97)));
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -157,5 +202,27 @@ public class Main2Activity extends AppCompatActivity {
             }
 
         });
+
+        WebView web=(WebView)findViewById(R.id.webView);
+        web.getSettings().setJavaScriptEnabled(true);
+
+        web.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl)
+            {
+                // Handle the error
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url)
+            {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
+        web.loadUrl(camAddress);
+        web.getSettings().setLoadWithOverviewMode(true);
+        web.getSettings().setUseWideViewPort(true);
     }
 }

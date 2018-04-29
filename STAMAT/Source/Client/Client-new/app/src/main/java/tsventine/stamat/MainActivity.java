@@ -33,9 +33,11 @@ public class MainActivity extends AppCompatActivity {
     public static PrintWriter out = null;
     public static Socket socket = null;
     String serverAddress = "192.168.4.1"/*"192.168.1.112"*/;
+    String camAdress = "http://192.168.4.1:25566";
     int port= 2121;
     int progressFB = 80;
     int progressLR = 80;
+    int time = 50;
 
 
     private class socketConnection extends AsyncTask<String, Void,Integer > {
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 sliderLR.setProgress(progressLR);
                 new sendMessage().execute(String.valueOf("LR"+(progressLR-80)));
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -249,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 sliderFB.setProgress(progressFB);
                     new sendMessage().execute(String.valueOf("FB"+(progressFB-80)));
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -287,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        web.loadUrl("http://172.24.1.1:25566");
+        web.loadUrl(camAdress);
         web.getSettings().setLoadWithOverviewMode(true);
         web.getSettings().setUseWideViewPort(true);
         //setContentView(web);
