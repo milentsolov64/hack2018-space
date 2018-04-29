@@ -1,6 +1,11 @@
 import com.pi4j.io.serial.*;
 import com.pi4j.util.CommandArgumentParser;
 import com.pi4j.util.Console;
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.RaspiPin;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -18,6 +23,10 @@ public class stamat
 {
 	public stamat() {}
 
+	 final static GpioController gpio = GpioFactory.getInstance();
+     final static GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "led", PinState.LOW);
+     final static int servo5Up = 15,servo5Down=-90;
+     
 	final static Console console = new Console();
 	public static void main(String[] args) throws Exception
 	{
@@ -36,76 +45,104 @@ public class stamat
 	}
 
 
+	private static boolean executeArduino(String s,PrintWriter out) {
 
-	private static int executeCommand(String s, Serial serial)
-	{
+		boolean flag = true;
 		try {
-			if (s.contains("RESET")) {
-				serial.write("reset\r");
-			}
-
-			if ((s == "LEDON") || (s != "LEDOFF") || (s != "GLOWON") || (s != "GLOWOFF")){
-
-			}
-
-			if(s.contains("S2")) {
-				s = s.replace("S2", "");
-				serial.write("servo 2:" + s + "\r");
+			if(s.contains("AR")) {
+				out.write(s);
 				console.println(s);
 			}
-
-
-			if (s.contains("S6")) {
-				s = s.replace("S6", "");
-				serial.write("servo 6:" + s + "\r");
-				console.println(s);
-			}
-
-
-
-			if (s.contains("S3")) {
-				s = s.replace("S3", "");
-				serial.write("servo 3:" + s + "\r");
-				console.println(s);
-			}
-
-			if (s.contains("S4")) {
-				s = s.replace("S4", "");
-				serial.write("servo 4:" + s + "\r");
-				console.println(s);
-			}
-
-			if (s.contains("FB")) {
-				s = s.replace("FB", "");
-				if(s=="0")
-				{
-					serial.write("stop\r");
-				}
-				else{
-					serial.write("mogo 1:"+s+" 2:"+s+"\r");
-				}
-			}
-
-			if (s.contains("LR")) {
-				s = s.replace("LR", "");
-				if(Integer.parseInt(s)>0){
-					serial.write("mogo 1:"+s+" 2:-"+s+"\r");
-				}
-				else if(Integer.parseInt(s)<0){
-					serial.write("mogo 1:"+s);
-					s=s.replace("-","");
-					serial.write(" 2:"+s+"\r");
-				}
-				else {
-					serial.write("stop\r");
-				}
+			else {
+				flag = false;
 			}
 		}
-		catch(IOException ex){
+		catch(Exception e){
 		}
 
+		return flag;
+	}
 
-		return 0;
+	private static boolean executeCommand(String s, Serial serial)
+	{
+		synchronized(console){
+			try {
+				if (s.contains("RESET")) {
+					serial.write("reset\r");
+				}
+
+				if (s == "LEDON") {
+					pin.high();
+				}else if(s=="LEDOFF") {
+					pin.low();
+				}
+					
+				if(s != "SENSORUP"){
+					serial.write("servo 5:" + servo5Up + "\r");
+					console.println(s);
+				}else if(s != "SENSORDOWN"){
+					serial.write("servo 5:" + servo5Down + "\r");
+					console.println(s);
+				}
+
+				if(s.contains("S2")) {
+					s = s.replace("S2", "");
+					serial.write("servo 2:" + s + "\r");
+					console.println(s);
+				}
+
+
+				if (s.contains("S6")) {
+					s = s.replace("S6", "");
+					serial.write("servo 6:" + s + "\r");
+					console.println(s);
+				}
+
+
+
+				if (s.contains("S3")) {
+					s = s.replace("S3", "");
+					serial.write("servo 3:" + s + "\r");
+					console.println(s);
+				}
+
+				if (s.contains("S4")) {
+					s = s.replace("S4", "");
+					serial.write("servo 4:" + s + "\r");
+					console.println(s);
+				}
+
+				if (s.contains("FB")) {
+					s = s.replace("FB", "");
+					if(s=="0")
+					{
+						serial.write("stop\r");
+					}
+					else{
+						serial.write("mogo 1:"+s+" 2:"+s+"\r");
+					}
+				}
+
+				if (s.contains("LR")) {
+					s = s.replace("LR", "");
+					if(Integer.parseInt(s)>0){
+						serial.write("mogo 1:"+s+" 2:-"+s+"\r");
+					}
+					else if(Integer.parseInt(s)<0){
+						serial.write("mogo 1:"+s);
+						s=s.replace("-","");
+						serial.write(" 2:"+s+"\r");
+					}
+					else {
+						serial.write("stop\r");
+					}
+				}
+			}
+			catch(IOException ex){
+			}
+
+		}
+		return true;
 	}
 
 	private static class connectionHandler
@@ -118,7 +155,6 @@ public class stamat
 		{
 			this.socket = socket;
 			this.clientNumber = clientNumber;
-			console.println("New connection with client# " + clientNumber + " at " + socket);
 		}
 
 		public void run()
@@ -149,7 +185,21 @@ public class stamat
 					}
 				});
 
-				// create serial config object
+				final Serial arduino = SerialFactory.createInstance();
+				arduino.addListener(new SerialDataEventListener() {
+					@Override
+					public void dataReceived(SerialDataEvent event) {
+
+						// print out the data received to the console
+						try {
+							console.println(event.getAsciiString());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+				// create serial config for stamat controller
 				SerialConfig config = new SerialConfig();
 				// set default serial settings (device, baud rate, flow control, etc)
 				config.device("/dev/ttyUSB0")
@@ -158,35 +208,42 @@ public class stamat
 				.parity(Parity.NONE)
 				.stopBits(StopBits._1)
 				.flowControl(FlowControl.NONE);
-				// parse optional command argument options to override the default serial settings.
-				/*if(args.length > 0){
-                config = CommandArgumentParser.getSerialConfig(config, args);
-            }*/
+
 				// display connection details
 				console.box(" Connecting to: " + config.toString(),
 						" Data received on serial port will be displayed below.");
+				console.println("New connection with client# " + clientNumber + " at " + socket);
 				// open the default serial device/port with the configuration settings
 				serial.open(config);
+
+				config.device("dev/ttyACM0")
+				.baud(Baud._9600)
+				.flowControl(FlowControl.NONE);
+
+				console.box(" Connecting to: " + config.toString(),
+						" Data from Arduino will be displayed below.");
+
+				arduino.open(config);
+
 				int flag=0;
 				BufferedReader in = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-
+				//out - is for clients 
 				out.println("Hello, you are client #" + clientNumber + ".");
 				out.println("Enter a line with only a period to quit\n");
-
 				for (;;)
 				{
 					String input = in.readLine();
 					if ((input == null) || (input.equals("."))) {
 						break;
 					}
-					/*log(input);
-          out.println(input);*/
-					if (executeCommand(input, serial) == 0) {
-						out.println("OK" + input);
-					} else {
-						out.println("FAK");
+					if(!executeArduino(input,out)) {
+						if (executeCommand(input, serial)) {
+							out.println("OK" + input);
+						} else {
+							out.println("FAK");
+						}
 					}
 				}
 			} catch (IOException e) {
@@ -197,7 +254,7 @@ public class stamat
 				} catch (IOException e) {
 					console.println("Couldn't close a socket, what's going on?");
 				}
-				console.println("Connection with client# " + clientNumber + " closed");
+				console.println("Connection with client# " + clientNumber + " closed"+"  "+Thread.activeCount());
 				this.interrupt();
 			}
 		}
