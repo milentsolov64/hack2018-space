@@ -6,7 +6,7 @@
    <ul>
      <li>Server.jar [pi4j] (done)</li>
      <li>motion (done)</li>
-     <li>sensors (ЙОК)</li>
+     <li>sensors (soon)</li>
      <li>hostapd & dnsmasq [wifi AP] (done) </li>
    </ul>
   <li>Client Side - Android Phone</li>
